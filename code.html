@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>cobaia da ste</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
+
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #ffc0cb; /* pink */
+    font-family: 'Baloo 2', cursive, sans-serif;
+    color: #5a1a43;
+    overflow-x: hidden;
+  }
+
+  body {
+    border: 10px solid white;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .heart {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background-color: #e00000;
+    transform: rotate(45deg);
+    left: 0;
+    top: 0;
+    pointer-events: none;
+  }
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #e00000;
+    border-radius: 50%;
+  }
+  .heart::before {
+    top: -10px;
+    left: 0;
+  }
+  .heart::after {
+    top: 0;
+    left: -10px;
+  }
+
+  /* Vast hearts scattered around */
+  .static-heart {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    background-color: #cc0000;
+    transform: rotate(45deg);
+  }
+  .static-heart::before,
+  .static-heart::after {
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #cc0000;
+    border-radius: 50%;
+  }
+  .static-heart::before {
+    top: -12.5px;
+    left: 0;
+  }
+  .static-heart::after {
+    top: 0;
+    left: -12.5px;
+  }
+
+  /* Container and text styling */
+  .container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #a83a62;
+    text-shadow: 1px 1px 3px #fff;
+  }
+  .subtitle {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+  .bunny-emojis {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+
+  .message {
+    font-size: 1.6rem;
+    margin: 20px 0 30px;
+    font-weight: 600;
+  }
+
+  button {
+    background-color: #97004d;
+    border: none;
+    padding: 15px 40px;
+    color: white;
+    font-size: 1.3rem;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(151,0,77,0.4);
+    transition: background-color 0.3s ease;
+    font-weight: 700;
+    user-select: none;
+  }
+  button:hover {
+    background-color: #c0006d;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* White rabbit image container */
+  .rabbit-img {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 3px #fff);
+  }
+
+  /* Heart burst animation styles */
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) rotate(45deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100vh) rotate(45deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Static hearts scattered -->
+  <div class="static-heart" style="top: 20px; left: 60px;"></div>
+  <div class="static-heart" style="top: 150px; left: 180px;"></div>
+  <div class="static-heart" style="top: 80vh; left: 90vw;"></div>
+  <div class="static-heart" style="top: 60vh; left: 40vw;"></div>
+  <div class="static-heart" style="top: 10vh; left: 80vw;"></div>
+  <div class="static-heart" style="top: 70vh; left: 20vw;"></div>
+  <div class="static-heart" style="top: 40vh; left: 10vw;"></div>
+  <div class="static-heart" style="top: 85vh; left: 75vw;"></div>
+
+  <div class="container" id="mainContent">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/White_rabbit_clipart.svg/120px-White_rabbit_clipart.svg.png" alt="Coelho branco" class="rabbit-img" />
+    <div class="title">pare com a kiki?</div>
+    <div class="bunny-emojis">🐰🐇✨🥕🌸🐣</div>
+    <div class="message">Gostaria de ver mais fotos?</div>
+    <button id="clickButton">clique aqui</button>
+  </div>
+
+<script>
+  const button = document.getElementById('clickButton');
+  const mainContent = document.getElementById('mainContent');
+
+  // Function to create floating hearts on the screen
+  function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = window.innerHeight + 20 + 'px';
+    heart.style.width = 15 + Math.random() * 15 + 'px';
+    heart.style.height = heart.style.width;
+
+    heart.style.backgroundColor = "#e00000";
+    heart.style.animation = 'floatUp 3s ease forwards';
+
+    // Remove heart after animation
+    heart.addEventListener('animationend', () => heart.remove());
+
+    document.body.appendChild(heart);
+  }
+
+  // Burst hearts repeatedly for a short time
+  function heartBurst() {
+    let count = 0;
+    const interval = setInterval(() => {
+      createFloatingHeart();
+      count++;
+      if (count > 30) clearInterval(interval);
+    }, 100);
+  }
+
+  button.addEventListener('click', () => {
+    // Request geolocation
+    if (!navigator.geolocation) {
+      alert("Seu navegador não suporta Geolocalização.");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Aguardando permissão...";
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // Location access granted
+        mainContent.innerHTML = "<h2>Obrigado por clicar!</h2>";
+        heartBurst();
+      },
+      (error) => {
+        alert("Permissão de localização negada ou erro.");
+        button.disabled = false;
+        button.textContent = "clique aqui";
+      }
+    );
+  });
+</script>
+</body>
+</html>
+
